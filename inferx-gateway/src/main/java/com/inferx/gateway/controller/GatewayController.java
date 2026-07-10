@@ -1,7 +1,7 @@
 package com.inferx.gateway.controller;
 
 import org.springframework.data.redis.connection.stream.MapRecord;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.ReactiveRedisMessageListenerContainer;
 import org.springframework.http.MediaType;
@@ -18,10 +18,10 @@ import java.util.UUID;
 @RestController
 public class GatewayController {
 
-    private final ReactiveRedisTemplate<String, String> redisTemplate;
+    private final ReactiveStringRedisTemplate redisTemplate;
     private final ReactiveRedisMessageListenerContainer redisMessageListenerContainer;
 
-    public GatewayController(ReactiveRedisTemplate<String, String> redisTemplate, 
+    public GatewayController(ReactiveStringRedisTemplate redisTemplate, 
                              ReactiveRedisMessageListenerContainer redisMessageListenerContainer) {
         this.redisTemplate = redisTemplate;
         this.redisMessageListenerContainer = redisMessageListenerContainer;
