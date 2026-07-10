@@ -1,0 +1,34 @@
+services:
+  # The Spring Boot Gateway
+  - type: web
+    name: inferx-gateway
+    env: docker
+    dockerContext: ./inferx-gateway
+    dockerfilePath: ./inferx-gateway/Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_DATA_REDIS_HOST
+        sync: false # You will paste your Upstash Redis Host here
+      - key: SPRING_DATA_REDIS_PORT
+        sync: false # You will paste your Upstash Redis Port here
+      - key: SPRING_DATA_REDIS_PASSWORD
+        sync: false # You will paste your Upstash Redis Password here
+      - key: SPRING_DATA_REDIS_SSL_ENABLED
+        value: "true"
+
+  # The PyTorch Worker
+  - type: worker
+    name: inferx-worker
+    env: docker
+    dockerContext: ./inferx-worker
+    dockerfilePath: ./inferx-worker/Dockerfile
+    plan: free
+    envVars:
+      - key: REDIS_HOST
+        sync: false 
+      - key: REDIS_PORT
+        sync: false
+      - key: REDIS_PASSWORD
+        sync: false
+      - key: REDIS_SSL
+        value: "true"

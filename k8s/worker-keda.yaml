@@ -1,0 +1,15 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: worker-keda-scaler
+spec:
+  scaleTargetRef:
+    name: worker
+  minReplicaCount: 0  # Scale down to zero to save costs when no requests are pending
+  maxReplicaCount: 20
+  triggers:
+  - type: redis
+    metadata:
+      address: redis:6379
+      listName: inferx_tasks  # KEDA scales based on the length of this stream/list
+      listLength: "5"         # Add 1 more pod for every 5 pending tasks

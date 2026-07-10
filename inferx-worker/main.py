@@ -17,6 +17,8 @@ import os
 # --- Configuration ---
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", None)
+REDIS_SSL = os.getenv("REDIS_SSL", "False").lower() in ("true", "1", "yes")
 STREAM_NAME = "inferx_tasks"
 GROUP_NAME = "inferx_group"
 # Unique consumer name for this instance
@@ -117,7 +119,7 @@ async def process_batch(r, stream_entries):
 
 async def consumer_loop():
     """Background Redis Stream consumer using XREADGROUP."""
-    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
+    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, password=REDIS_PASSWORD, ssl=REDIS_SSL)
     
     # Initialize the consumer group if it doesn't exist
     try:
@@ -150,7 +152,7 @@ async def consumer_loop():
 
 async def janitor_loop():
     """3. Fault Tolerance: Background loop to recover stalled messages."""
-    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
+    r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, password=REDIS_PASSWORD, ssl=REDIS_SSL)
     print("Janitor loop started.")
     
     while True:

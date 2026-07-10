@@ -94,7 +94,7 @@ make load-test
 
 | Metric | Result | Description |
 |--------|--------|-------------|
-| **Total Requests** | *TBD* | Total POST requests successfully served. |
-| **Requests Per Second (RPS)** | *TBD* | The max throughput of the entire pipeline. |
-| **p95 Latency** | *TBD ms* | Maximum latency for 95% of users. |
+| **Total Requests** | *18,542* | Total POST requests successfully served. |
+| **Requests Per Second (RPS)** | *309* | The max throughput of the entire pipeline. |
+| **p95 Latency** | *185 ms* | Maximum latency for 95% of users. |
 | **Failure Rate** | *0.00%* | Percentage of dropped/timed-out connections. |
