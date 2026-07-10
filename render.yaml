@@ -8,13 +8,17 @@ services:
     plan: free
     envVars:
       - key: SPRING_DATA_REDIS_HOST
-        sync: false # You will paste your Upstash Redis Host here
+        sync: false # Paste your Upstash Redis Host here (just the hostname, NO https://)
       - key: SPRING_DATA_REDIS_PORT
-        sync: false # You will paste your Upstash Redis Port here
+        sync: false # Paste your Upstash Redis Port here (usually 6379)
       - key: SPRING_DATA_REDIS_PASSWORD
-        sync: false # You will paste your Upstash Redis Password here
+        sync: false # Paste your Upstash Redis Password here
       - key: SPRING_DATA_REDIS_SSL_ENABLED
         value: "true"
+      - key: SERVER_PORT
+        value: "10000"
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Xmx256m -Xms256m"
 
   # The PyTorch Worker (Faking a web service for the free tier!)
   - type: web
