@@ -1,0 +1,51 @@
+version: '3.8'
+
+networks:
+  inferx-net:
+    driver: bridge
+
+services:
+  redis:
+    image: redis:7.2-alpine
+    networks:
+      - inferx-net
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  gateway:
+    build:
+      context: ./inferx-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - inferx-net
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+
+  worker:
+    build:
+      context: ./inferx-worker
+      dockerfile: Dockerfile
+    networks:
+      - inferx-net
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+volumes:
+  redis_data:

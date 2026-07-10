@@ -1,0 +1,25 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+.env
+
+# Java / Maven build outputs
+target/
+.mvn/
+*.jar
+*.war
+*.ear
+*.class
+
+# IDE configurations
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS-level metadata
+.DS_Store
+Thumbs.db
