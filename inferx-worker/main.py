@@ -5,6 +5,8 @@ import time
 import io
 import uuid
 import socket
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 from PIL import Image
 import torch
@@ -177,7 +179,22 @@ async def janitor_loop():
         # Run the janitor process every 30 seconds
         await asyncio.sleep(30)
 
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+
+def start_health_server():
+    port = int(os.getenv("PORT", 8080))
+    server = HTTPServer(("0.0.0.0", port), HealthCheckHandler)
+    print(f"Started dummy health check server on port {port} for Render")
+    server.serve_forever()
+
 async def main():
+    # Start the dummy HTTP server in a background thread for Render
+    threading.Thread(target=start_health_server, daemon=True).start()
+    
     await setup_model()
     
     # Run consumer and janitor loops concurrently

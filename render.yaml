@@ -16,8 +16,8 @@ services:
       - key: SPRING_DATA_REDIS_SSL_ENABLED
         value: "true"
 
-  # The PyTorch Worker
-  - type: worker
+  # The PyTorch Worker (Faking a web service for the free tier!)
+  - type: web
     name: inferx-worker
     env: docker
     dockerContext: ./inferx-worker
