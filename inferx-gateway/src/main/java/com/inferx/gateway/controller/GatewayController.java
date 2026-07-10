@@ -48,7 +48,7 @@ public class GatewayController {
                 })
                 .doFinally(signal -> {
                     // Clean up the hash to prevent memory leaks in Redis
-                    redisTemplate.opsForHash().delete("result:" + reqId, "data").subscribe();
+                    redisTemplate.opsForHash().remove("result:" + reqId, "data").subscribe();
                 });
                 
         // 2. Gateway pushes incoming requests to Redis Stream 'inferx_tasks' using XADD
